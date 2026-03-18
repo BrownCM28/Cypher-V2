@@ -1,0 +1,1454 @@
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+<!-- Perplexity Computer Attribution — SEO Meta Tags -->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Cypher — DMV Defense Tech Intelligence</title>
+  <meta name="description" content="Cypher: Real-time intelligence map for frontier technology, national security, defense tech, and venture activity in the Washington DC / DMV region."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <style>
+/* ── Reset & base ───────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0d0d0d; --surface:#111111; --surface2:#151515; --surface3:#1a1a1a;
+  --border:#1e1e1e; --border2:#252525; --border3:#2e2e2e;
+  --text:#c8c8c8; --text-muted:#777; --text-faint:#3a3a3a;
+  --accent:#3ECF8E; --accent-hover:#2fb87a; --accent-dim:rgba(62,207,142,.12); --accent-dim2:rgba(62,207,142,.06);
+  --font:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  --r:8px; --r-sm:5px; --r-lg:12px;
+  --node-gov:#c94040; --node-startup:#d4a832; --node-vc:#4f98a3;
+  --node-uni:#5a9e3e; --node-person:#9966cc;
+  --edge-funding:#4f98a3; --edge-contract:#d4a832; --edge-talent:#9966cc; --edge-research:#5a9e3e;
+  --sidebar-w:220px; --right-w:280px; --toolbar-h:48px;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);
+  font-family:var(--font);font-size:13px;-webkit-font-smoothing:antialiased}
+button{font-family:var(--font);cursor:pointer}
+svg{display:block}
+
+/* ── App shell ──────────────────────────────────────────── */
+#app{display:flex;height:100vh;width:100vw;overflow:hidden}
+
+/* ── Sidebar ────────────────────────────────────────────── */
+#sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  background:var(--surface);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;height:100%;overflow:hidden;z-index:10;
+}
+.sidebar-header{
+  padding:14px 14px 10px;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-logo{
+  display:flex;align-items:center;gap:8px;flex:1;min-width:0;
+}
+.sidebar-logo-icon{width:26px;height:26px;flex-shrink:0}
+.sidebar-logo-name{font-size:14px;font-weight:700;letter-spacing:-.3px;color:#fff;white-space:nowrap}
+.sidebar-logo-ver{font-size:9px;color:var(--accent);font-family:var(--mono);
+  background:var(--accent-dim);border:1px solid rgba(62,207,142,.2);
+  border-radius:3px;padding:1px 5px;margin-left:2px;white-space:nowrap}
+
+/* Auth chip in header */
+.auth-chip{
+  display:flex;align-items:center;gap:6px;padding:4px 6px;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:20px;cursor:pointer;transition:border-color .15s;
+  white-space:nowrap;flex-shrink:0;
+}
+.auth-chip:hover{border-color:var(--border3)}
+.auth-avatar{
+  width:20px;height:20px;border-radius:50%;
+  background:linear-gradient(135deg,#3ECF8E 0%,#2fb87a 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;color:#000;flex-shrink:0;
+}
+.auth-name{font-size:11px;color:var(--text-muted);max-width:70px;overflow:hidden;text-overflow:ellipsis}
+
+.sidebar-search{padding:10px;border-bottom:1px solid var(--border)}
+.search-wrap{position:relative}
+.search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none}
+#searchInput{
+  width:100%;padding:7px 10px 7px 30px;background:var(--surface2);
+  border:1px solid var(--border2);border-radius:var(--r-sm);
+  color:var(--text);font-size:12px;font-family:var(--font);outline:none;transition:border-color .15s;
+}
+#searchInput:focus{border-color:var(--accent)}
+#searchInput::placeholder{color:var(--text-faint)}
+
+/* Nav sections */
+.sidebar-scroll{flex:1;overflow-y:auto;overflow-x:hidden}
+.sidebar-scroll::-webkit-scrollbar{width:3px}
+.sidebar-scroll::-webkit-scrollbar-thumb{background:var(--border3);border-radius:3px}
+
+.nav-section{padding:6px 0}
+.nav-section-header{
+  display:flex;align-items:center;gap:6px;padding:5px 14px;
+  font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--text-muted);cursor:pointer;user-select:none;transition:color .15s;
+}
+.nav-section-header:hover{color:var(--text)}
+.nav-section-chevron{transition:transform .2s;margin-left:auto}
+.nav-section-header.collapsed .nav-section-chevron{transform:rotate(-90deg)}
+.nav-section-items{overflow:hidden;transition:max-height .25s ease}
+.nav-item{
+  display:flex;align-items:center;gap:8px;padding:5px 14px 5px 20px;
+  cursor:pointer;border-radius:0;transition:background .12s;
+  font-size:12px;color:var(--text-muted);border-left:2px solid transparent;
+}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{color:var(--accent);border-left-color:var(--accent);background:var(--accent-dim2)}
+.nav-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.nav-item-count{
+  margin-left:auto;font-size:10px;color:var(--text-faint);
+  font-family:var(--mono);
+}
+
+/* Sidebar footer */
+.sidebar-footer{
+  border-top:1px solid var(--border);padding:10px 14px;
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-footer-pplx{
+  font-size:10px;color:var(--text-faint);
+}
+.sidebar-footer-pplx a{color:var(--text-faint);text-decoration:none;transition:color .15s}
+.sidebar-footer-pplx a:hover{color:var(--text-muted)}
+
+/* ── Main canvas area ───────────────────────────────────── */
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+
+/* Top bar */
+#topBar{
+  display:flex;align-items:center;gap:8px;padding:0 12px;height:38px;
+  background:var(--surface);border-bottom:1px solid var(--border);
+  flex-shrink:0;z-index:8;
+}
+.breadcrumb{display:flex;align-items:center;gap:4px;font-size:11px;flex:1;min-width:0;overflow:hidden}
+.breadcrumb-item{color:var(--text-muted);white-space:nowrap}
+.breadcrumb-item.current{color:var(--accent)}
+.breadcrumb-sep{color:var(--text-faint);font-size:10px}
+.topbar-status{
+  display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text-muted);
+  font-family:var(--mono);white-space:nowrap;flex-shrink:0;
+}
+.live-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--accent);
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(0.8)}}
+
+/* Filter chips row */
+#filterBar{
+  display:flex;align-items:center;gap:6px;padding:6px 12px;
+  background:var(--bg);border-bottom:1px solid var(--border);
+  flex-shrink:0;overflow-x:auto;
+}
+#filterBar::-webkit-scrollbar{height:0}
+.filter-label{font-size:10px;color:var(--text-faint);white-space:nowrap;flex-shrink:0;margin-right:4px}
+.filter-chip{
+  display:flex;align-items:center;gap:4px;padding:3px 10px;
+  background:var(--surface);border:1px solid var(--border2);border-radius:20px;
+  font-size:11px;color:var(--text-muted);cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:all .15s;
+}
+.filter-chip:hover{border-color:var(--border3);color:var(--text)}
+.filter-chip.active{
+  background:var(--accent-dim);border-color:rgba(62,207,142,.35);color:var(--accent);
+}
+.chip-dot{width:5px;height:5px;border-radius:50%}
+.filter-sep{width:1px;height:16px;background:var(--border);flex-shrink:0}
+
+/* Canvas container */
+#canvasWrap{flex:1;position:relative;overflow:hidden}
+#graphCanvas{position:absolute;inset:0;width:100%;height:100%}
+
+/* ── Node tooltip/popup ─────────────────────────────────── */
+#nodePopup{
+  position:absolute;width:260px;
+  background:rgba(14,14,14,.95);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid var(--border2);border-radius:var(--r-lg);
+  padding:14px;z-index:50;display:none;
+  box-shadow:0 16px 48px rgba(0,0,0,.6);
+  pointer-events:auto;
+}
+.popup-header{margin-bottom:10px}
+.popup-type{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-muted);margin-bottom:4px}
+.popup-name{font-size:14px;font-weight:600;color:#fff;line-height:1.3}
+.popup-desc{font-size:11px;color:var(--text-muted);line-height:1.55;margin-bottom:10px}
+.popup-divider{height:1px;background:var(--border);margin:8px 0}
+.popup-activity-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint);margin-bottom:6px}
+.popup-activity-item{margin-bottom:6px}
+.popup-activity-date{font-size:9px;color:var(--accent);font-family:var(--mono);margin-bottom:2px}
+.popup-activity-text{font-size:11px;color:var(--text-muted);line-height:1.45}
+.popup-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.popup-tag{
+  font-size:9px;padding:2px 7px;border-radius:20px;
+  background:var(--surface2);border:1px solid var(--border2);color:var(--text-muted);
+}
+.popup-close{
+  position:absolute;top:10px;right:10px;width:20px;height:20px;
+  background:var(--surface2);border:1px solid var(--border2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;color:var(--text-muted);transition:all .15s;font-size:12px;
+}
+.popup-close:hover{background:var(--border2);color:var(--text)}
+.popup-connected{margin-top:8px}
+.popup-connected-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint);margin-bottom:6px}
+.popup-connected-item{
+  display:flex;align-items:center;gap:6px;padding:3px 0;
+  font-size:11px;color:var(--text-muted);
+}
+.popup-connected-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
+/* ── Floating toolbar ───────────────────────────────────── */
+#toolbar{
+  position:absolute;bottom:16px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:2px;
+  background:rgba(14,14,14,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--border2);border-radius:28px;
+  padding:5px 8px;z-index:20;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);
+}
+.toolbar-btn{
+  display:flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:50%;
+  background:transparent;border:none;color:var(--text-muted);
+  transition:all .15s;
+}
+.toolbar-btn:hover{background:var(--surface2);color:var(--text)}
+.toolbar-btn.active{background:var(--accent-dim);color:var(--accent)}
+.toolbar-sep{width:1px;height:20px;background:var(--border);margin:0 4px}
+
+/* zoom controls */
+.zoom-level{font-size:10px;color:var(--text-faint);font-family:var(--mono);padding:0 6px;white-space:nowrap}
+
+/* ── Right panel ────────────────────────────────────────── */
+#rightPanel{
+  width:var(--right-w);flex-shrink:0;
+  background:var(--surface);border-left:1px solid var(--border);
+  display:flex;flex-direction:column;height:100%;overflow:hidden;z-index:10;
+}
+
+/* Calendar */
+#calendarPane{border-bottom:1px solid var(--border);padding:12px}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.cal-title{font-size:12px;font-weight:600;color:#fff}
+.cal-nav{display:flex;gap:4px}
+.cal-nav-btn{
+  width:22px;height:22px;background:var(--surface2);border:1px solid var(--border2);
+  border-radius:4px;display:flex;align-items:center;justify-content:center;
+  color:var(--text-muted);cursor:pointer;transition:all .15s;
+}
+.cal-nav-btn:hover{border-color:var(--border3);color:var(--text)}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;text-align:center}
+.cal-dow{font-size:9px;color:var(--text-faint);padding:0 0 5px;font-weight:500}
+.cal-day{
+  font-size:10px;color:var(--text-muted);padding:4px 0;border-radius:4px;
+  cursor:pointer;transition:all .12s;position:relative;
+}
+.cal-day:hover{background:var(--surface2);color:var(--text)}
+.cal-day.today{color:var(--accent);font-weight:600}
+.cal-day.today::after{
+  content:'';position:absolute;bottom:1px;left:50%;transform:translateX(-50%);
+  width:3px;height:3px;border-radius:50%;background:var(--accent);
+}
+.cal-day.has-event::before{
+  content:'';position:absolute;top:2px;right:2px;
+  width:3px;height:3px;border-radius:50%;background:var(--edge-contract);
+}
+.cal-day.empty{cursor:default}
+.cal-day.other-month{color:var(--text-faint)}
+
+/* Entity detail / live feed tabs */
+.rpanel-tabs{
+  display:flex;border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.rpanel-tab{
+  flex:1;padding:8px 0;font-size:11px;font-weight:500;
+  color:var(--text-muted);background:transparent;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;transition:all .15s;
+}
+.rpanel-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.rpanel-tab:hover:not(.active){color:var(--text)}
+
+.rpanel-content{flex:1;overflow:hidden;position:relative}
+.rpanel-pane{position:absolute;inset:0;overflow-y:auto;padding:12px;display:none}
+.rpanel-pane.active{display:block}
+.rpanel-pane::-webkit-scrollbar{width:3px}
+.rpanel-pane::-webkit-scrollbar-thumb{background:var(--border3);border-radius:3px}
+
+/* Detail pane */
+.detail-empty{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  height:100%;gap:8px;color:var(--text-faint);text-align:center;padding:24px;
+}
+.detail-empty svg{opacity:.3}
+.detail-empty p{font-size:12px}
+.detail-node-name{font-size:14px;font-weight:600;color:#fff;margin-bottom:4px}
+.detail-node-type{
+  font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--text-muted);margin-bottom:10px;font-family:var(--mono);
+}
+.detail-desc{font-size:11px;color:var(--text-muted);line-height:1.6;margin-bottom:12px}
+.detail-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px}
+.detail-tag{
+  font-size:9px;padding:2px 7px;border-radius:20px;
+  background:var(--surface2);border:1px solid var(--border2);color:var(--text-muted);
+}
+.detail-section-title{
+  font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;
+  color:var(--text-faint);margin:10px 0 6px;
+}
+.detail-activity-item{margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.detail-activity-item:last-child{border-bottom:none}
+.detail-activity-date{font-size:9px;color:var(--accent);font-family:var(--mono);margin-bottom:2px}
+.detail-activity-text{font-size:11px;color:var(--text-muted);line-height:1.5}
+.detail-activity-badge{
+  display:inline-block;font-size:8px;padding:1px 5px;border-radius:3px;
+  text-transform:uppercase;font-weight:600;margin-right:4px;
+}
+.badge-contract{background:rgba(212,168,50,.15);color:#d4a832}
+.badge-funding{background:rgba(79,152,163,.15);color:#4f98a3}
+.badge-hiring{background:rgba(62,207,142,.12);color:#3ECF8E}
+.badge-research{background:rgba(90,158,62,.15);color:#5a9e3e}
+.badge-talent{background:rgba(153,102,204,.15);color:#9966cc}
+
+/* Live feed */
+.feed-item{
+  display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);
+  cursor:pointer;transition:background .12s;border-radius:4px;
+}
+.feed-item:hover{background:var(--surface2)}
+.feed-item:last-child{border-bottom:none}
+.feed-dot-wrap{display:flex;flex-direction:column;align-items:center;gap:0;padding-top:2px}
+.feed-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.feed-body{flex:1;min-width:0}
+.feed-text{font-size:11px;color:var(--text-muted);line-height:1.45;margin-bottom:3px}
+.feed-meta{display:flex;align-items:center;gap:6px}
+.feed-time{font-size:9px;color:var(--text-faint);font-family:var(--mono)}
+.feed-type-badge{font-size:8px;padding:1px 5px;border-radius:3px;font-weight:600;text-transform:uppercase}
+
+/* Signal counter badge */
+.signal-counter{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:18px;height:18px;padding:0 5px;
+  background:var(--accent);color:#000;
+  font-size:9px;font-weight:700;font-family:var(--mono);
+  border-radius:9px;margin-left:4px;
+}
+
+/* Layer badge */
+.layer-badge{
+  display:inline-flex;align-items:center;gap:4px;padding:2px 7px;
+  background:var(--accent-dim2);border:1px solid rgba(62,207,142,.2);
+  border-radius:20px;font-size:9px;color:var(--accent);font-family:var(--mono);
+}
+
+/* ── Auth modal tab + panel helpers ─────────────────────── */
+.am-tab{
+  flex:1;padding:7px 12px;font-size:12px;font-weight:500;
+  color:var(--text-muted);background:transparent;border:none;
+  border-radius:6px;cursor:pointer;transition:all .15s;font-family:var(--font);
+}
+.am-tab.active{background:var(--accent);color:#000;}
+.am-tab:hover:not(.active){color:var(--text);background:var(--border);}
+.am-panel{display:none;}
+.am-panel.active{display:block;}
+#amError.visible{display:block!important;}
+
+/* ── Edge legend ────────────────────────────────────────── */
+#edgeLegend{
+  position:absolute;bottom:72px;left:12px;
+  background:rgba(14,14,14,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:10px 12px;z-index:15;
+}
+.legend-title{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--text-faint);margin-bottom:7px}
+.legend-item{display:flex;align-items:center;gap:7px;font-size:10px;color:var(--text-muted);margin-bottom:4px}
+.legend-item:last-child{margin-bottom:0}
+.legend-line{width:20px;height:2px;border-radius:1px;flex-shrink:0}
+
+/* ── Hover overlay for node label ───────────────────────── */
+#nodeLabel{
+  position:absolute;pointer-events:none;
+  background:rgba(14,14,14,.9);border:1px solid var(--border2);
+  border-radius:var(--r-sm);padding:4px 8px;
+  font-size:11px;color:var(--text);
+  display:none;z-index:30;white-space:nowrap;
+}
+  </style>
+</head>
+<body>
+<div id="app">
+
+<!-- ── Sidebar ── -->
+<aside id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <!-- Cypher Logo SVG -->
+      <svg class="sidebar-logo-icon" viewBox="0 0 26 26" fill="none" aria-label="Cypher">
+        <rect width="26" height="26" rx="6" fill="#111"/>
+        <circle cx="13" cy="13" r="2.8" fill="#3ECF8E"/>
+        <circle cx="6"  cy="7"  r="1.5" fill="#fff" opacity=".5"/>
+        <circle cx="20" cy="6"  r="1.5" fill="#fff" opacity=".5"/>
+        <circle cx="5"  cy="19" r="1.2" fill="#fff" opacity=".35"/>
+        <circle cx="21" cy="20" r="1.4" fill="#fff" opacity=".45"/>
+        <line x1="13" y1="13" x2="6"  y2="7"  stroke="#3ECF8E" stroke-width=".9" opacity=".6"/>
+        <line x1="13" y1="13" x2="20" y2="6"  stroke="#3ECF8E" stroke-width=".9" opacity=".6"/>
+        <line x1="13" y1="13" x2="5"  y2="19" stroke="#fff" stroke-width=".6" opacity=".2"/>
+        <line x1="13" y1="13" x2="21" y2="20" stroke="#3ECF8E" stroke-width=".9" opacity=".4"/>
+      </svg>
+      <span class="sidebar-logo-name">CYPHER</span>
+      <span class="sidebar-logo-ver">v2.0</span>
+    </div>
+
+    <!-- Auth chip -->
+    <div class="auth-chip" id="authChip" title="Account settings">
+      <div class="auth-avatar" id="authAvatar">D</div>
+      <span class="auth-name" id="authName">Demo</span>
+    </div>
+  </div>
+
+  <div class="sidebar-search">
+    <div class="search-wrap">
+      <svg class="search-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="searchInput" type="text" placeholder="Search entities…" autocomplete="off"/>
+    </div>
+  </div>
+
+  <div class="sidebar-scroll" id="sidebarScroll">
+    <!-- nav sections rendered by JS -->
+  </div>
+
+  <div class="sidebar-footer">
+    <div class="sidebar-footer-pplx">
+      <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
+    </div>
+  </div>
+</aside>
+
+<!-- ── Main ── -->
+<main id="main">
+  <!-- Top bar -->
+  <div id="topBar">
+    <div class="breadcrumb">
+      <span class="breadcrumb-item">Cypher</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-item">DMV Region</span>
+      <span class="breadcrumb-sep">›</span>
+      <span class="breadcrumb-item current" id="bcCurrent">Intelligence Graph</span>
+    </div>
+    <div class="topbar-status">
+      <div class="live-dot"></div>
+      LIVE &nbsp;|&nbsp; <span id="nodeCount">50</span> entities &nbsp;|&nbsp; <span id="edgeCount">63</span> connections
+      &nbsp;<span class="layer-badge" id="layerBadge">ALL LAYERS</span>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <div id="filterBar">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-chip active" data-filter="all" onclick="setFilter('all')">All Entities</button>
+    <button class="filter-chip" data-filter="government" onclick="setFilter('government')">
+      <span class="chip-dot" style="background:#c94040"></span>Government
+    </button>
+    <button class="filter-chip" data-filter="startup" onclick="setFilter('startup')">
+      <span class="chip-dot" style="background:#d4a832"></span>Contractors
+    </button>
+    <button class="filter-chip" data-filter="vc" onclick="setFilter('vc')">
+      <span class="chip-dot" style="background:#4f98a3"></span>Venture
+    </button>
+    <button class="filter-chip" data-filter="university" onclick="setFilter('university')">
+      <span class="chip-dot" style="background:#5a9e3e"></span>Research
+    </button>
+    <button class="filter-chip" data-filter="person" onclick="setFilter('person')">
+      <span class="chip-dot" style="background:#9966cc"></span>Operators
+    </button>
+    <span class="filter-sep"></span>
+    <button class="filter-chip" data-layer="funding" onclick="toggleLayer('funding')">
+      <span class="chip-dot" style="background:#4f98a3"></span>Funding
+    </button>
+    <button class="filter-chip" data-layer="contract" onclick="toggleLayer('contract')">
+      <span class="chip-dot" style="background:#d4a832"></span>Contracts
+    </button>
+    <button class="filter-chip" data-layer="talent" onclick="toggleLayer('talent')">
+      <span class="chip-dot" style="background:#9966cc"></span>Talent
+    </button>
+    <button class="filter-chip" data-layer="research" onclick="toggleLayer('research')">
+      <span class="chip-dot" style="background:#5a9e3e"></span>Research
+    </button>
+  </div>
+
+  <!-- Canvas -->
+  <div id="canvasWrap">
+    <canvas id="graphCanvas"></canvas>
+
+    <!-- Node hover label -->
+    <div id="nodeLabel"></div>
+
+    <!-- Node popup -->
+    <div id="nodePopup">
+      <button class="popup-close" onclick="closePopup()">✕</button>
+      <div class="popup-header">
+        <div class="popup-type" id="popupType"></div>
+        <div class="popup-name" id="popupName"></div>
+      </div>
+      <div class="popup-desc" id="popupDesc"></div>
+      <div class="popup-divider"></div>
+      <div class="popup-activity-title">Recent Activity</div>
+      <div id="popupActivity"></div>
+      <div class="popup-connected">
+        <div class="popup-connected-title">Connected Nodes</div>
+        <div id="popupConnected"></div>
+      </div>
+      <div class="popup-tags" id="popupTags"></div>
+    </div>
+
+    <!-- Edge legend -->
+    <div id="edgeLegend">
+      <div class="legend-title">Connections</div>
+      <div class="legend-item"><div class="legend-line" style="background:#4f98a3"></div>Funding</div>
+      <div class="legend-item"><div class="legend-line" style="background:#d4a832"></div>Contract</div>
+      <div class="legend-item"><div class="legend-line" style="background:#9966cc;opacity:.7"></div>Talent</div>
+      <div class="legend-item"><div class="legend-line" style="background:#5a9e3e"></div>Research</div>
+    </div>
+
+    <!-- Floating toolbar -->
+    <div id="toolbar">
+      <button class="toolbar-btn" title="Zoom In" onclick="zoomBy(1.25)" id="btnZoomIn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>
+      </button>
+      <button class="toolbar-btn" title="Zoom Out" onclick="zoomBy(0.8)" id="btnZoomOut">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6"/></svg>
+      </button>
+      <span class="zoom-level" id="zoomLabel">100%</span>
+      <div class="toolbar-sep"></div>
+      <button class="toolbar-btn" title="Reset view" onclick="resetView()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      </button>
+      <div class="toolbar-sep"></div>
+      <button class="toolbar-btn active" title="Show labels" id="btnLabels" onclick="toggleLabels()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M7 12h10"/></svg>
+      </button>
+      <button class="toolbar-btn" title="Toggle edge glow" id="btnGlow" onclick="toggleGlow()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      </button>
+      <div class="toolbar-sep"></div>
+      <button class="toolbar-btn" title="Signal count" onclick="showFeed()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.74 9.73 19.79 19.79 0 0 1 1.74 1.1 2 2 0 0 1 3.71 0h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 6.4a16 16 0 0 0 6 6l.88-.88a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        <span class="signal-counter">30</span>
+      </button>
+    </div>
+  </div>
+</main>
+
+<!-- ── Auth Modal — inline overlay ── -->
+<div id="authModal" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;" onclick="if(event.target===this)closeAuthModal();">
+  <div style="background:#111;border:1px solid #252525;border-radius:16px;padding:36px;width:400px;max-width:94vw;max-height:92vh;overflow-y:auto;position:relative;animation:fadeUp .25s ease both;">
+    <!-- Close -->
+    <button onclick="closeAuthModal()" style="position:absolute;top:14px;right:14px;width:24px;height:24px;background:#1a1a1a;border:1px solid #2e2e2e;border-radius:50%;color:#777;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;">&#x2715;</button>
+
+    <!-- Logo -->
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px;">
+      <svg width="24" height="24" viewBox="0 0 26 26" fill="none">
+        <rect width="26" height="26" rx="6" fill="#111"/>
+        <circle cx="13" cy="13" r="2.8" fill="#3ECF8E"/>
+        <circle cx="6" cy="7" r="1.5" fill="#fff" opacity=".5"/>
+        <circle cx="20" cy="6" r="1.5" fill="#fff" opacity=".5"/>
+        <line x1="13" y1="13" x2="6" y2="7" stroke="#3ECF8E" stroke-width=".9" opacity=".6"/>
+        <line x1="13" y1="13" x2="20" y2="6" stroke="#3ECF8E" stroke-width=".9" opacity=".6"/>
+      </svg>
+      <span style="font-size:15px;font-weight:700;color:#fff;letter-spacing:-.3px;">CYPHER</span>
+    </div>
+
+    <!-- Title -->
+    <h2 id="amCardTitle" style="font-size:18px;font-weight:600;color:#fff;margin-bottom:6px;">Welcome back</h2>
+    <p style="font-size:12px;color:#777;margin-bottom:22px;">Sign in or create a Cypher account</p>
+
+    <!-- Tabs -->
+    <div style="display:flex;gap:0;background:#151515;border:1px solid #1e1e1e;border-radius:8px;padding:3px;margin-bottom:22px;">
+      <button id="amTabSignIn" class="am-tab active" onclick="switchAuthTab('signin')">Sign In</button>
+      <button id="amTabSignUp" class="am-tab" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+
+    <!-- Error -->
+    <div id="amError" style="display:none;background:rgba(224,82,82,.1);border:1px solid rgba(224,82,82,.25);border-radius:5px;padding:9px 12px;font-size:12px;color:#e05252;margin-bottom:14px;"></div>
+
+    <!-- Sign In Panel -->
+    <div id="amPanelSignIn" class="am-panel active">
+      <form onsubmit="handleModalSignIn(event)">
+        <div style="margin-bottom:13px;">
+          <label style="display:block;font-size:11px;font-weight:500;color:#777;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Email</label>
+          <input id="amEmail" type="email" placeholder="you@agency.gov" required
+            style="width:100%;padding:10px 12px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:13px;font-family:inherit;outline:none;" 
+            onfocus="this.style.borderColor='#3ECF8E'" onblur="this.style.borderColor='#252525'"/>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:11px;font-weight:500;color:#777;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Password</label>
+          <input id="amPassword" type="password" placeholder="••••••••" required
+            style="width:100%;padding:10px 12px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:13px;font-family:inherit;outline:none;"
+            onfocus="this.style.borderColor='#3ECF8E'" onblur="this.style.borderColor='#252525'"/>
+        </div>
+        <button id="amBtnSignIn" type="submit" style="width:100%;padding:11px;background:#3ECF8E;color:#000;font-size:13px;font-weight:600;border:none;border-radius:5px;cursor:pointer;">Sign In &rarr;</button>
+      </form>
+      <div style="display:flex;align-items:center;gap:10px;margin:16px 0;"><div style="flex:1;height:1px;background:#1e1e1e;"></div><span style="font-size:10px;color:#3a3a3a;text-transform:uppercase;letter-spacing:.08em;">or</span><div style="flex:1;height:1px;background:#1e1e1e;"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button onclick="window.location.href='/api/auth/callback/google'" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:12px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google</button>
+        <button onclick="window.location.href='/api/auth/callback/github'" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:12px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>GitHub</button>
+      </div>
+    </div>
+
+    <!-- Sign Up Panel -->
+    <div id="amPanelSignUp" class="am-panel">
+      <form onsubmit="handleModalSignUp(event)">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:13px;">
+          <div>
+            <label style="display:block;font-size:11px;font-weight:500;color:#777;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">First Name</label>
+            <input id="amFirstName" type="text" placeholder="Jane" required
+              style="width:100%;padding:10px 12px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:13px;font-family:inherit;outline:none;"
+              onfocus="this.style.borderColor='#3ECF8E'" onblur="this.style.borderColor='#252525'"/>
+          </div>
+          <div>
+            <label style="display:block;font-size:11px;font-weight:500;color:#777;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Last Name</label>
+            <input id="amLastName" type="text" placeholder="Smith" required
+              style="width:100%;padding:10px 12px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:13px;font-family:inherit;outline:none;"
+              onfocus="this.style.borderColor='#3ECF8E'" onblur="this.style.borderColor='#252525'"/>
+          </div>
+        </div>
+        <div style="margin-bottom:13px;">
+          <label style="display:block;font-size:11px;font-weight:500;color:#777;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Work Email</label>
+          <input id="amEmailUp" type="email" placeholder="you@agency.gov" required
+            style="width:100%;padding:10px 12px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:13px;font-family:inherit;outline:none;"
+            onfocus="this.style.borderColor='#3ECF8E'" onblur="this.style.borderColor='#252525'"/>
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:block;font-size:11px;font-weight:500;color:#777;text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;">Password</label>
+          <input id="amPasswordUp" type="password" placeholder="Min. 8 characters" minlength="8" required
+            style="width:100%;padding:10px 12px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:13px;font-family:inherit;outline:none;"
+            onfocus="this.style.borderColor='#3ECF8E'" onblur="this.style.borderColor='#252525'"/>
+        </div>
+        <button id="amBtnSignUp" type="submit" style="width:100%;padding:11px;background:#3ECF8E;color:#000;font-size:13px;font-weight:600;border:none;border-radius:5px;cursor:pointer;">Create Account &rarr;</button>
+      </form>
+      <div style="display:flex;align-items:center;gap:10px;margin:16px 0;"><div style="flex:1;height:1px;background:#1e1e1e;"></div><span style="font-size:10px;color:#3a3a3a;text-transform:uppercase;letter-spacing:.08em;">or</span><div style="flex:1;height:1px;background:#1e1e1e;"></div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+        <button onclick="window.location.href='/api/auth/callback/google'" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:12px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>Google</button>
+        <button onclick="window.location.href='/api/auth/callback/github'" style="display:flex;align-items:center;justify-content:center;gap:7px;padding:9px;background:#151515;border:1px solid #252525;border-radius:5px;color:#c8c8c8;font-size:12px;cursor:pointer;"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>GitHub</button>
+      </div>
+    </div>
+
+    <!-- Better Auth notice -->
+    <div style="margin-top:18px;background:rgba(62,207,142,.06);border:1px solid rgba(62,207,142,.15);border-radius:5px;padding:9px 12px;display:flex;align-items:flex-start;gap:8px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span style="font-size:10px;color:#777;line-height:1.5;">Auth powered by <strong style="color:#3ECF8E;">Better Auth</strong> — connect your backend at <code style="font-family:monospace;background:rgba(255,255,255,.06);padding:1px 4px;border-radius:2px;font-size:9px;">/api/auth</code></span>
+    </div>
+  </div>
+</div>
+
+<!-- ── Right panel ── -->
+<aside id="rightPanel">
+  <!-- Calendar -->
+  <div id="calendarPane">
+    <div class="cal-header">
+      <div class="cal-title" id="calTitle">March 2026</div>
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="calNav(-1)">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button class="cal-nav-btn" onclick="calNav(1)">
+          <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="cal-grid" id="calGrid"></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="rpanel-tabs">
+    <button class="rpanel-tab active" id="tabDetail" onclick="switchRTab('detail')">Entity Detail</button>
+    <button class="rpanel-tab"        id="tabFeed"   onclick="switchRTab('feed')">Live Feed</button>
+  </div>
+
+  <div class="rpanel-content">
+    <!-- Detail pane -->
+    <div class="rpanel-pane active" id="paneDetail">
+      <div class="detail-empty" id="detailEmpty">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <p>Click any node to<br/>view entity details</p>
+      </div>
+      <div id="detailContent" style="display:none"></div>
+    </div>
+
+    <!-- Feed pane -->
+    <div class="rpanel-pane" id="paneFeed">
+      <div id="feedContent"></div>
+    </div>
+  </div>
+</aside>
+
+</div><!-- #app -->
+
+<!-- Data -->
+<script src="data.js"></script>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   CYPHER — Force-directed Intelligence Graph
+   Version 2.0 — Supabase green accent, white connector dots,
+   50 nodes / 63 edges, Better Auth integration stubs
+═══════════════════════════════════════════════════════════════ */
+
+/* ── Data ── */
+const D = window.CYPHER_DATA;
+const NODES = D.nodes;
+const EDGES = D.edges;
+const FEED  = D.liveFeed;
+
+/* ── Node colours ── */
+const NODE_COLORS = {
+  government:'#c94040', startup:'#d4a832', vc:'#4f98a3',
+  university:'#5a9e3e', person:'#9966cc',
+};
+const EDGE_COLORS = {
+  funding:'#4f98a3', contract:'#d4a832', talent:'rgba(153,102,204,.65)', research:'#5a9e3e',
+};
+const NODE_RADII = { xl:14, lg:10, md:7, sm:5 };
+
+/* ── State ── */
+let cvs, ctx, W, H;
+let scale=1, tx=0, ty=0;
+let dragging=false, dragNode=null, dragOffX=0, dragOffY=0;
+let panStart=null, panTx=0, panTy=0;
+let hovNode=null, selNode=null;
+let showLabels=true, showGlow=false;
+let simRunning=true;
+let filterType='all';
+let activeLayers=new Set(['funding','contract','talent','research']);
+let simNodes=[], simEdges=[];
+let calYear=2026, calMonth=2; // 0-indexed: 2=March
+
+/* ── Canvas setup ── */
+function initCanvas(){
+  cvs=document.getElementById('graphCanvas');
+  ctx=cvs.getContext('2d');
+  resize();
+  window.addEventListener('resize',()=>{resize();resetView(true)});
+}
+
+function resize(){
+  const wrap=document.getElementById('canvasWrap');
+  W=wrap.clientWidth; H=wrap.clientHeight;
+  cvs.width=W*devicePixelRatio; cvs.height=H*devicePixelRatio;
+  cvs.style.width=W+'px'; cvs.style.height=H+'px';
+  ctx.scale(devicePixelRatio,devicePixelRatio);
+}
+
+/* ── Sim node init ── */
+function initSim(){
+  simNodes = NODES.map((n,i)=>{
+    const ang = (i/NODES.length)*Math.PI*2;
+    const r   = 120 + Math.random()*180;
+    return {
+      ...n,
+      x: W/2 + Math.cos(ang)*r,
+      y: H/2 + Math.sin(ang)*r,
+      vx:0, vy:0,
+      r: NODE_RADII[n.size]||7,
+      visible:true,
+    };
+  });
+  simEdges = EDGES.map(e=>({
+    ...e,
+    source: simNodes.find(n=>n.id===e.source),
+    target: simNodes.find(n=>n.id===e.target),
+  })).filter(e=>e.source&&e.target);
+}
+
+/* ── Force simulation ── */
+const SIM={
+  repulsion:   3200,
+  linkDist:    120,
+  linkStrength:0.06,
+  center:      0.008,
+  damp:        0.78,
+};
+let simFrame=0;
+const SIM_SETTLE_FRAMES=260; // stop sim after this many frames
+
+function tick(){
+  if(!simRunning)return;
+
+  // Auto-stop after settle frames — prevents endless jitter
+  simFrame++;
+  if(simFrame>SIM_SETTLE_FRAMES&&!dragNode){
+    // Check kinetic energy; if settled, stop
+    let ke=0;
+    simNodes.forEach(n=>{ke+=n.vx*n.vx+n.vy*n.vy;});
+    if(ke<0.5){simRunning=false;return;}
+  }
+
+  const vis = simNodes.filter(n=>n.visible);
+  const cx=W/2, cy=H/2;
+
+  // Center force
+  vis.forEach(n=>{
+    n.vx+=(cx-n.x)*SIM.center;
+    n.vy+=(cy-n.y)*SIM.center;
+  });
+
+  // Repulsion — skip pairs that are far apart for performance
+  for(let i=0;i<vis.length;i++){
+    for(let j=i+1;j<vis.length;j++){
+      const a=vis[i], b=vis[j];
+      let dx=b.x-a.x, dy=b.y-a.y;
+      const dist2=dx*dx+dy*dy+1;
+      if(dist2>250000)continue; // skip very far pairs
+      const dist=Math.sqrt(dist2);
+      const force=SIM.repulsion/dist2;
+      const fx=dx/dist*force, fy=dy/dist*force;
+      a.vx-=fx; a.vy-=fy;
+      b.vx+=fx; b.vy+=fy;
+    }
+  }
+
+  // Link forces
+  simEdges.forEach(e=>{
+    if(!e.source.visible||!e.target.visible)return;
+    const dx=e.target.x-e.source.x, dy=e.target.y-e.source.y;
+    const dist=Math.sqrt(dx*dx+dy*dy)+0.01;
+    const diff=(dist-SIM.linkDist)/dist*SIM.linkStrength;
+    const fx=dx*diff, fy=dy*diff;
+    e.source.vx+=fx; e.source.vy+=fy;
+    e.target.vx-=fx; e.target.vy-=fy;
+  });
+
+  // Integrate + damping
+  vis.forEach(n=>{
+    if(n===dragNode)return;
+    n.vx*=SIM.damp; n.vy*=SIM.damp;
+    n.x+=n.vx; n.y+=n.vy;
+    // soft bounds — push back gently
+    const margin=60;
+    if(n.x<margin)     n.vx+=1.2*(margin-n.x)/margin;
+    if(n.x>W-margin)   n.vx-=1.2*(n.x-(W-margin))/margin;
+    if(n.y<margin)     n.vy+=1.2*(margin-n.y)/margin;
+    if(n.y>H-margin)   n.vy-=1.2*(n.y-(H-margin))/margin;
+  });
+}
+
+/* ── Draw ── */
+function draw(){
+  ctx.clearRect(0,0,W,H);
+  ctx.save();
+  ctx.translate(tx,ty);
+  ctx.scale(scale,scale);
+
+  // Draw edges
+  simEdges.forEach(e=>{
+    if(!e.source.visible||!e.target.visible)return;
+    if(!activeLayers.has(e.type))return;
+    const col=EDGE_COLORS[e.type]||'#444';
+    const isSel = selNode&&(e.source===selNode||e.target===selNode);
+    const isHov = hovNode&&(e.source===hovNode||e.target===hovNode);
+    const alpha  = (isSel||isHov) ? 0.9 : 0.22;
+
+    ctx.beginPath();
+    ctx.moveTo(e.source.x,e.source.y);
+    ctx.lineTo(e.target.x,e.target.y);
+    ctx.strokeStyle=col;
+    ctx.globalAlpha=alpha;
+    ctx.lineWidth=(isSel||isHov)?1.8:0.9;
+
+    if(showGlow&&(isSel||isHov)){
+      ctx.shadowColor=col;
+      ctx.shadowBlur=6;
+    }
+    ctx.stroke();
+    ctx.shadowBlur=0;
+    ctx.globalAlpha=1;
+  });
+
+  // Draw nodes
+  simNodes.forEach(n=>{
+    if(!n.visible)return;
+    const isSel=n===selNode;
+    const isHov=n===hovNode;
+    const col=NODE_COLORS[n.type]||'#666';
+    const r=n.r;
+
+    ctx.globalAlpha=1;
+
+    // Selection ring
+    if(isSel){
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,r+5,0,Math.PI*2);
+      ctx.fillStyle='rgba(62,207,142,.12)';
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,r+4,0,Math.PI*2);
+      ctx.strokeStyle='#3ECF8E';
+      ctx.lineWidth=1.5;
+      ctx.stroke();
+    } else if(isHov){
+      ctx.beginPath();
+      ctx.arc(n.x,n.y,r+3,0,Math.PI*2);
+      ctx.fillStyle='rgba(255,255,255,.06)';
+      ctx.fill();
+    }
+
+    // Node body
+    if(showGlow||(isSel||isHov)){
+      ctx.shadowColor=col;
+      ctx.shadowBlur=isSel?20:(isHov?12:8);
+    }
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.fillStyle=col;
+    ctx.fill();
+    ctx.shadowBlur=0;
+
+    // Node border
+    ctx.beginPath();
+    ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.strokeStyle=isSel?'#3ECF8E':(isHov?'rgba(255,255,255,.35)':'rgba(255,255,255,.12)');
+    ctx.lineWidth=isSel?1.5:0.8;
+    ctx.stroke();
+
+    // Label pill (if showLabels and large enough)
+    if(showLabels && (r>=7 || isSel || isHov)){
+      drawLabel(n, col, isSel, isHov);
+    }
+  });
+
+  ctx.restore();
+  requestAnimationFrame(()=>{if(simRunning)tick();draw()});
+}
+
+/* ── Label pill with WHITE connector dot ── */
+function drawLabel(n, col, isSel, isHov){
+  const fontSize=10;
+  ctx.font=`${fontSize}px Inter,system-ui,sans-serif`;
+  const tw=ctx.measureText(n.name).width;
+  const pillW=tw+24, pillH=15;
+  const px=n.x+n.r+4, py=n.y-pillH/2;
+
+  // Pill background
+  ctx.beginPath();
+  roundRect(ctx,px,py,pillW,pillH,4);
+  ctx.fillStyle=isSel?'rgba(62,207,142,.15)':'rgba(13,13,13,.85)';
+  ctx.fill();
+  ctx.strokeStyle=isSel?'rgba(62,207,142,.4)':'rgba(255,255,255,.08)';
+  ctx.lineWidth=0.7;
+  ctx.stroke();
+
+  // WHITE connector dot
+  ctx.beginPath();
+  ctx.arc(px+8, py+pillH/2, 3, 0, Math.PI*2);
+  ctx.fillStyle='#ffffff';
+  ctx.globalAlpha=0.85;
+  ctx.fill();
+  ctx.globalAlpha=1;
+
+  // Name text
+  ctx.fillStyle=isSel?'#3ECF8E':'#c8c8c8';
+  ctx.fillText(n.name, px+15, py+10.5);
+}
+
+function roundRect(c,x,y,w,h,r){
+  c.moveTo(x+r,y);c.lineTo(x+w-r,y);c.quadraticCurveTo(x+w,y,x+w,y+r);
+  c.lineTo(x+w,y+h-r);c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  c.lineTo(x+r,y+h);c.quadraticCurveTo(x,y+h,x,y+h-r);
+  c.lineTo(x,y+r);c.quadraticCurveTo(x,y,x+r,y);c.closePath();
+}
+
+/* ── Hit test ── */
+function hitNode(mx,my){
+  const gx=(mx-tx)/scale, gy=(my-ty)/scale;
+  for(let i=simNodes.length-1;i>=0;i--){
+    const n=simNodes[i];
+    if(!n.visible)continue;
+    const dx=gx-n.x, dy=gy-n.y;
+    if(dx*dx+dy*dy<=(n.r+4)*(n.r+4))return n;
+  }
+  return null;
+}
+
+/* ── Mouse events ── */
+function setupEvents(){
+  cvs.addEventListener('mousedown',onMouseDown);
+  cvs.addEventListener('mousemove',onMouseMove);
+  cvs.addEventListener('mouseup',onMouseUp);
+  cvs.addEventListener('mouseleave',()=>{hovNode=null;document.getElementById('nodeLabel').style.display='none'});
+  cvs.addEventListener('wheel',onWheel,{passive:false});
+  cvs.addEventListener('click',onClick);
+}
+
+function getPos(e){
+  const r=cvs.getBoundingClientRect();
+  return{x:e.clientX-r.left, y:e.clientY-r.top};
+}
+
+function onMouseDown(e){
+  const {x,y}=getPos(e);
+  const n=hitNode(x,y);
+  if(n){dragNode=n;dragOffX=(x-tx)/scale-n.x;dragOffY=(y-ty)/scale-n.y;dragging=true}
+  else{panStart={x,y};panTx=tx;panTy=ty;dragging=false}
+}
+
+function onMouseMove(e){
+  const {x,y}=getPos(e);
+  if(dragging&&dragNode){
+    dragNode.x=(x-tx)/scale-dragOffX;
+    dragNode.y=(y-ty)/scale-dragOffY;
+    dragNode.vx=0;dragNode.vy=0;
+    return;
+  }
+  if(panStart){
+    tx=panTx+(x-panStart.x);
+    ty=panTy+(y-panStart.y);
+    return;
+  }
+  const n=hitNode(x,y);
+  hovNode=n;
+  const lbl=document.getElementById('nodeLabel');
+  if(n&&!selNode){
+    lbl.style.display='block';
+    lbl.textContent=n.name;
+    lbl.style.left=(x+10)+'px';
+    lbl.style.top=(y-28)+'px';
+  } else {
+    lbl.style.display='none';
+  }
+  cvs.style.cursor=n?'pointer':'grab';
+}
+
+function onMouseUp(e){
+  panStart=null;
+  if(dragNode)dragNode=null;
+  dragging=false;
+  cvs.style.cursor='default';
+}
+
+function onClick(e){
+  const {x,y}=getPos(e);
+  const n=hitNode(x,y);
+  if(n){selectNode(n,x,y)}
+  else{closePopup()}
+}
+
+function onWheel(e){
+  e.preventDefault();
+  const {x,y}=getPos(e);
+  const delta=-e.deltaY*0.001;
+  const newScale=Math.max(.15,Math.min(3.5,scale*(1+delta)));
+  tx=x-(x-tx)*(newScale/scale);
+  ty=y-(y-ty)*(newScale/scale);
+  scale=newScale;
+  updateZoomLabel();
+}
+
+/* ── Zoom controls ── */
+function zoomBy(factor){
+  const newScale=Math.max(.15,Math.min(3.5,scale*factor));
+  tx=W/2-(W/2-tx)*(newScale/scale);
+  ty=H/2-(H/2-ty)*(newScale/scale);
+  scale=newScale;
+  updateZoomLabel();
+}
+
+function resetView(silent){
+  scale=1;tx=0;ty=0;
+  if(!silent)updateZoomLabel();
+}
+
+function updateZoomLabel(){
+  document.getElementById('zoomLabel').textContent=Math.round(scale*100)+'%';
+}
+
+/* ── Toolbar toggles ── */
+function toggleLabels(){
+  showLabels=!showLabels;
+  document.getElementById('btnLabels').classList.toggle('active',showLabels);
+}
+
+function toggleGlow(){
+  showGlow=!showGlow;
+  document.getElementById('btnGlow').classList.toggle('active',showGlow);
+}
+
+/* ── Filter / layers ── */
+function setFilter(type){
+  filterType=type;
+  document.querySelectorAll('[data-filter]').forEach(btn=>{
+    btn.classList.toggle('active',btn.dataset.filter===type);
+  });
+  simNodes.forEach(n=>{
+    n.visible=(type==='all'||n.type===type);
+  });
+  // Re-energise sim so nodes redistribute after filter
+  simRunning=true;
+  simFrame=0;
+  simNodes.forEach(n=>{n.vx+=(Math.random()-.5)*2;n.vy+=(Math.random()-.5)*2;});
+  updateLayerBadge();
+  // Close popup if selected node is now hidden
+  if(selNode&&!selNode.visible)closePopup();
+}
+
+function toggleLayer(layer){
+  const btn=document.querySelector(`[data-layer="${layer}"]`);
+  if(activeLayers.has(layer)){activeLayers.delete(layer);btn.classList.remove('active')}
+  else{activeLayers.add(layer);btn.classList.add('active')}
+  updateLayerBadge();
+}
+
+function updateLayerBadge(){
+  const badge=document.getElementById('layerBadge');
+  if(filterType==='all'&&activeLayers.size===4){badge.textContent='ALL LAYERS';return}
+  const parts=[];
+  if(filterType!=='all')parts.push(filterType.toUpperCase());
+  if(activeLayers.size<4)parts.push([...activeLayers].join('+').toUpperCase());
+  badge.textContent=parts.join(' · ')||'FILTERED';
+}
+
+/* ── Node popup ── */
+function selectNode(n, px, py){
+  selNode=n;
+  document.getElementById('nodeLabel').style.display='none';
+
+  // Position popup
+  const popup=document.getElementById('nodePopup');
+  popup.style.display='block';
+  let popX=px+16, popY=py-20;
+  if(popX+270>W-var_rightW())popX=px-280;
+  if(popY+320>H)popY=H-340;
+  if(popY<10)popY=10;
+  popup.style.left=popX+'px';
+  popup.style.top=popY+'px';
+
+  // Populate
+  document.getElementById('popupType').textContent=n.type.toUpperCase();
+  document.getElementById('popupName').textContent=n.name;
+  document.getElementById('popupDesc').textContent=n.description||'';
+
+  // Activity
+  const actEl=document.getElementById('popupActivity');
+  actEl.innerHTML='';
+  const acts=(n.activity||[]).slice(0,2);
+  acts.forEach(a=>{
+    const d=document.createElement('div');
+    d.className='popup-activity-item';
+    d.innerHTML=`<div class="popup-activity-date">${a.date}</div><div class="popup-activity-text">${a.text}</div>`;
+    actEl.appendChild(d);
+  });
+
+  // Connected
+  const connEl=document.getElementById('popupConnected');
+  connEl.innerHTML='';
+  const connected=simEdges
+    .filter(e=>e.source===n||e.target===n)
+    .map(e=>({node:e.source===n?e.target:e.source,type:e.type}))
+    .slice(0,5);
+  connected.forEach(({node:cn,type:et})=>{
+    const d=document.createElement('div');
+    d.className='popup-connected-item';
+    d.innerHTML=`<span class="popup-connected-dot" style="background:${NODE_COLORS[cn.type]||'#666'}"></span><span>${cn.name}</span>`;
+    connEl.appendChild(d);
+  });
+
+  // Tags
+  const tagsEl=document.getElementById('popupTags');
+  tagsEl.innerHTML='';
+  (n.tags||[]).forEach(t=>{
+    const s=document.createElement('span');
+    s.className='popup-tag';s.textContent=t;
+    tagsEl.appendChild(s);
+  });
+
+  // Update detail panel
+  showDetail(n);
+}
+
+function closePopup(){
+  selNode=null;
+  document.getElementById('nodePopup').style.display='none';
+  document.getElementById('detailEmpty').style.display='flex';
+  document.getElementById('detailContent').style.display='none';
+}
+
+function var_rightW(){return parseInt(getComputedStyle(document.documentElement).getPropertyValue('--right-w'))||280}
+
+/* ── Detail panel ── */
+function showDetail(n){
+  document.getElementById('detailEmpty').style.display='none';
+  const el=document.getElementById('detailContent');
+  el.style.display='block';
+  const col=NODE_COLORS[n.type]||'#666';
+  const badgeClass={contract:'badge-contract',funding:'badge-funding',hiring:'badge-hiring',research:'badge-research',talent:'badge-talent'};
+  const actHtml=(n.activity||[]).map(a=>`
+    <div class="detail-activity-item">
+      <div class="detail-activity-date">${a.date}</div>
+      <div class="detail-activity-text">
+        <span class="detail-activity-badge ${badgeClass[a.type]||''}">${a.type}</span>${a.text}
+      </div>
+    </div>
+  `).join('');
+  const tagsHtml=(n.tags||[]).map(t=>`<span class="detail-tag">${t}</span>`).join('');
+  el.innerHTML=`
+    <div class="detail-node-name">${n.name}</div>
+    <div class="detail-node-type" style="color:${col}">${n.type}</div>
+    <div class="detail-desc">${n.description||''}</div>
+    <div class="detail-tags">${tagsHtml}</div>
+    <div class="detail-section-title">Activity Log</div>
+    ${actHtml}
+  `;
+  switchRTab('detail');
+}
+
+/* ── Right panel tabs ── */
+function switchRTab(tab){
+  document.getElementById('tabDetail').classList.toggle('active',tab==='detail');
+  document.getElementById('tabFeed').classList.toggle('active',tab==='feed');
+  document.getElementById('paneDetail').classList.toggle('active',tab==='detail');
+  document.getElementById('paneFeed').classList.toggle('active',tab==='feed');
+}
+
+function showFeed(){switchRTab('feed')}
+
+/* ── Live feed ── */
+function buildFeed(){
+  const el=document.getElementById('feedContent');
+  const typeColors={contract:'#d4a832',funding:'#4f98a3',hiring:'#3ECF8E',research:'#5a9e3e',talent:'#9966cc'};
+  el.innerHTML=FEED.map(item=>`
+    <div class="feed-item" onclick="focusEntity('${item.entity}')">
+      <div class="feed-dot-wrap">
+        <div class="feed-dot" style="background:${typeColors[item.type]||'#666'}"></div>
+      </div>
+      <div class="feed-body">
+        <div class="feed-text">${item.text}</div>
+        <div class="feed-meta">
+          <span class="feed-time">${item.time}</span>
+          <span class="feed-type-badge" style="background:${typeColors[item.type]||'#444'}22;color:${typeColors[item.type]||'#888'}">${item.type}</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function focusEntity(id){
+  const n=simNodes.find(n=>n.id===id);
+  if(!n)return;
+  // Pan to node
+  tx=W/2-n.x*scale;
+  ty=H/2-n.y*scale;
+  selectNode(n, W/2+60, H/2);
+}
+
+/* ── Sidebar nav ── */
+function buildSidebar(){
+  const groups=[
+    {label:'Government',  type:'government', color:'#c94040'},
+    {label:'VC / Investors', type:'vc',       color:'#4f98a3'},
+    {label:'Contractors', type:'startup',     color:'#d4a832'},
+    {label:'Research',    type:'university',  color:'#5a9e3e'},
+    {label:'Operators',   type:'person',      color:'#9966cc'},
+  ];
+  const scroll=document.getElementById('sidebarScroll');
+  scroll.innerHTML='';
+  groups.forEach(g=>{
+    const nodes=NODES.filter(n=>n.type===g.type);
+    const sec=document.createElement('div');
+    sec.className='nav-section';
+    const hdr=document.createElement('div');
+    hdr.className='nav-section-header';
+    hdr.innerHTML=`
+      <span class="nav-dot" style="background:${g.color}"></span>
+      <span>${g.label}</span>
+      <span class="nav-item-count">${nodes.length}</span>
+      <svg class="nav-section-chevron" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+    `;
+    const items=document.createElement('div');
+    items.className='nav-section-items';
+    nodes.forEach(n=>{
+      const item=document.createElement('div');
+      item.className='nav-item';
+      item.id='navItem_'+n.id;
+      item.innerHTML=`<span class="nav-dot" style="background:#ffffff;opacity:0.55"></span><span>${n.name}</span>`;
+      item.onclick=()=>focusEntity(n.id);
+      items.appendChild(item);
+    });
+    hdr.onclick=()=>{
+      hdr.classList.toggle('collapsed');
+      items.style.maxHeight=hdr.classList.contains('collapsed')?'0':items.scrollHeight+'px';
+    };
+    items.style.maxHeight=items.scrollHeight+'px';
+    sec.appendChild(hdr);
+    sec.appendChild(items);
+    scroll.appendChild(sec);
+  });
+  // Fix heights after initial render
+  setTimeout(()=>{
+    document.querySelectorAll('.nav-section-items').forEach(el=>{
+      el.style.maxHeight=el.scrollHeight+'px';
+    });
+  },50);
+}
+
+/* ── Search ── */
+document.getElementById('searchInput').addEventListener('input',function(){
+  const q=this.value.toLowerCase().trim();
+  if(!q){simNodes.forEach(n=>n.visible=filterType==='all'||n.type===filterType);return}
+  simNodes.forEach(n=>{
+    n.visible=n.name.toLowerCase().includes(q)||
+              (n.description||'').toLowerCase().includes(q)||
+              (n.tags||[]).some(t=>t.toLowerCase().includes(q));
+  });
+});
+
+/* ── Calendar ── */
+function buildCalendar(){
+  const months=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calTitle').textContent=months[calMonth]+' '+calYear;
+  const grid=document.getElementById('calGrid');
+  grid.innerHTML='';
+  // Day headers
+  ['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>{
+    const el=document.createElement('div');el.className='cal-dow';el.textContent=d;
+    grid.appendChild(el);
+  });
+  const first=new Date(calYear,calMonth,1).getDay();
+  const days=new Date(calYear,calMonth+1,0).getDate();
+  const today=new Date(2026,2,18); // Demo fixed
+  // Event days from data
+  const eventDays=new Set();
+  NODES.forEach(n=>(n.activity||[]).forEach(a=>{
+    const d=new Date(a.date);
+    if(d.getFullYear()===calYear&&d.getMonth()===calMonth)eventDays.add(d.getDate());
+  }));
+  // Blanks
+  for(let i=0;i<first;i++){const el=document.createElement('div');el.className='cal-day empty';grid.appendChild(el)}
+  for(let d=1;d<=days;d++){
+    const el=document.createElement('div');
+    el.className='cal-day';
+    el.textContent=d;
+    if(d===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear())el.classList.add('today');
+    if(eventDays.has(d))el.classList.add('has-event');
+    grid.appendChild(el);
+  }
+}
+
+function calNav(dir){
+  calMonth+=dir;
+  if(calMonth<0){calMonth=11;calYear--}
+  if(calMonth>11){calMonth=0;calYear++}
+  buildCalendar();
+}
+
+/* ── Auth chip interaction — show inline modal ── */
+document.getElementById('authChip').addEventListener('click',function(e){
+  e.stopPropagation();
+  showAuthModal('signin');
+});
+
+function showAuthModal(tab){
+  document.getElementById('authModal').style.display='flex';
+  switchAuthTab(tab||'signin');
+}
+
+function closeAuthModal(){
+  document.getElementById('authModal').style.display='none';
+}
+
+function switchAuthTab(tab){
+  const isSignIn=tab==='signin';
+  document.getElementById('amTabSignIn').classList.toggle('active',isSignIn);
+  document.getElementById('amTabSignUp').classList.toggle('active',!isSignIn);
+  document.getElementById('amPanelSignIn').classList.toggle('active',isSignIn);
+  document.getElementById('amPanelSignUp').classList.toggle('active',!isSignIn);
+  document.getElementById('amCardTitle').textContent=isSignIn?'Welcome back':'Create account';
+  document.getElementById('amError').classList.remove('visible');
+}
+
+function handleModalSignIn(e){
+  e.preventDefault();
+  const btn=document.getElementById('amBtnSignIn');
+  btn.textContent='Signing in…';btn.disabled=true;
+  fetch('/api/auth/sign-in/email',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:document.getElementById('amEmail').value,password:document.getElementById('amPassword').value}),
+    credentials:'include',
+  }).then(r=>{
+    if(r.ok){closeAuthModal();updateAuthState('Demo User');}  
+    else showModalError('Invalid credentials — try again.');
+  }).catch(()=>{closeAuthModal();updateAuthState('Demo User');})  
+  .finally(()=>{btn.textContent='Sign In →';btn.disabled=false;});
+}
+
+function handleModalSignUp(e){
+  e.preventDefault();
+  const btn=document.getElementById('amBtnSignUp');
+  btn.textContent='Creating…';btn.disabled=true;
+  fetch('/api/auth/sign-up/email',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      email:document.getElementById('amEmailUp').value,
+      password:document.getElementById('amPasswordUp').value,
+      name:document.getElementById('amFirstName').value+' '+document.getElementById('amLastName').value,
+    }),credentials:'include',
+  }).then(r=>{
+    if(r.ok){closeAuthModal();updateAuthState(document.getElementById('amFirstName').value);}
+    else showModalError('Could not create account.');
+  }).catch(()=>{closeAuthModal();updateAuthState(document.getElementById('amFirstName').value||'User');})
+  .finally(()=>{btn.textContent='Create Account →';btn.disabled=false;});
+}
+
+function showModalError(msg){
+  const el=document.getElementById('amError');el.textContent=msg;el.classList.add('visible');
+}
+
+function updateAuthState(name){
+  document.getElementById('authName').textContent=name;
+  document.getElementById('authAvatar').textContent=name.charAt(0).toUpperCase();
+}
+
+/* ── Init ── */
+function init(){
+  initCanvas();
+  initSim();
+  buildSidebar();
+  buildFeed();
+  buildCalendar();
+  setupEvents();
+  updateZoomLabel();
+  draw();
+  // Simulation starts immediately — auto-stops when kinetic energy settles
+  simFrame=0;
+  simRunning=true;
+}
+
+// Wait for fonts
+if(document.fonts&&document.fonts.ready){
+  document.fonts.ready.then(init);
+}else{
+  window.addEventListener('load',init);
+}
+</script>
+</body>
+</html>

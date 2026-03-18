@@ -1,0 +1,915 @@
+<!--
+   ______                            __
+  / ____/___  ____ ___  ____  __  __/ /____  _____
+ / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
+/ /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
+\____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
+                    /_/
+        Created with Perplexity Computer
+        https://www.perplexity.ai/computer
+-->
+
+<!-- Perplexity Computer Attribution — SEO Meta Tags -->
+<meta name="generator" content="Perplexity Computer">
+<meta name="author" content="Perplexity Computer">
+<meta property="og:see_also" content="https://www.perplexity.ai/computer">
+<link rel="author" href="https://www.perplexity.ai/computer">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cypher — Sign In</title>
+  <meta name="description" content="Cypher — DMV Defense Tech Intelligence Platform. Sign in to access real-time defense tech, venture, and national security intelligence for the DC region." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Tokens ─────────────────────────────────────────── */
+    :root {
+      --bg:        #0d0d0d;
+      --surface:   #111111;
+      --surface2:  #161616;
+      --border:    #1e1e1e;
+      --border2:   #2a2a2a;
+      --text:      #c8c8c8;
+      --text-muted:#888;
+      --text-faint:#444;
+      --accent:    #3ECF8E;
+      --accent-hover: #2fb87a;
+      --accent-dim:   rgba(62,207,142,.12);
+      --accent-dim2:  rgba(62,207,142,.06);
+      --error:     #e05252;
+      --font:      'Inter', system-ui, sans-serif;
+      --mono:      'JetBrains Mono', monospace;
+      --radius:    10px;
+      --radius-sm: 6px;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Layout ──────────────────────────────────────────── */
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 480px 1fr;
+      grid-template-rows: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    /* Left side — branding panel (hidden on small) */
+    .brand-panel {
+      grid-column: 1;
+      grid-row: 1 / 4;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px;
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      border-right: 1px solid var(--border);
+    }
+
+    .brand-wordmark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 48px;
+    }
+
+    .brand-logo-svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .brand-name {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .brand-tagline {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-family: var(--mono);
+      margin-bottom: 48px;
+    }
+
+    .brand-headline {
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.3;
+      color: #fff;
+      margin-bottom: 16px;
+      max-width: 380px;
+    }
+
+    .brand-headline span {
+      color: var(--accent);
+    }
+
+    .brand-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 360px;
+      margin-bottom: 48px;
+    }
+
+    .brand-stats {
+      display: flex;
+      gap: 32px;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Constellation decoration */
+    .brand-constellation {
+      margin-bottom: 40px;
+    }
+
+    /* ── Auth Card ───────────────────────────────────────── */
+    .auth-area {
+      grid-column: 2;
+      grid-row: 2;
+      padding: 40px;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .auth-logo-mobile {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .auth-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .auth-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* ── Tabs ────────────────────────────────────────────── */
+    .tab-row {
+      display: flex;
+      gap: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 4px;
+      margin-bottom: 28px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-radius: calc(var(--radius) - 2px);
+      cursor: pointer;
+      transition: all .15s ease;
+      font-family: var(--font);
+    }
+
+    .tab-btn.active {
+      background: var(--accent);
+      color: #000;
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--text);
+      background: var(--border);
+    }
+
+    /* ── Form ────────────────────────────────────────────── */
+    .form-panel { display: none; }
+    .form-panel.active { display: block; }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 11px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 14px;
+      font-family: var(--font);
+      transition: border-color .15s, box-shadow .15s;
+      outline: none;
+    }
+
+    .form-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-dim);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-faint);
+    }
+
+    .form-input.error {
+      border-color: var(--error);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    /* ── Password toggle ─────────────────────────────────── */
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap .form-input {
+      padding-right: 44px;
+    }
+
+    .toggle-pw {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-faint);
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      transition: color .15s;
+    }
+
+    .toggle-pw:hover { color: var(--text-muted); }
+
+    /* ── Forgot ──────────────────────────────────────────── */
+    .form-meta {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: -8px;
+      margin-bottom: 16px;
+    }
+
+    .form-meta a {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color .15s;
+    }
+
+    .form-meta a:hover { color: var(--accent); }
+
+    /* ── Submit ──────────────────────────────────────────── */
+    .btn-primary {
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      color: #000;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      font-family: var(--font);
+      transition: background .15s, transform .1s;
+      margin-bottom: 20px;
+    }
+
+    .btn-primary:hover { background: var(--accent-hover); }
+    .btn-primary:active { transform: scale(.98); }
+
+    .btn-primary.loading {
+      opacity: .7;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* ── Divider ─────────────────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .divider span {
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── OAuth Buttons ───────────────────────────────────── */
+    .oauth-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .btn-oauth {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: border-color .15s, background .15s;
+      text-decoration: none;
+    }
+
+    .btn-oauth:hover {
+      border-color: var(--border2);
+      background: #1a1a1a;
+    }
+
+    /* ── Better Auth badge ───────────────────────────────── */
+    .auth-powered {
+      background: var(--accent-dim2);
+      border: 1px solid rgba(62,207,142,.15);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .auth-powered-icon {
+      width: 18px;
+      height: 18px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .auth-powered-text {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .auth-powered-text strong {
+      color: var(--accent);
+    }
+
+    .auth-powered-text code {
+      font-family: var(--mono);
+      background: rgba(255,255,255,.06);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+
+    /* ── Footer ──────────────────────────────────────────── */
+    .auth-footer {
+      grid-column: 2;
+      grid-row: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      padding: 20px 40px 40px;
+    }
+
+    .auth-footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .auth-footer-links a {
+      font-size: 11px;
+      color: var(--text-faint);
+      text-decoration: none;
+      transition: color .15s;
+    }
+
+    .auth-footer-links a:hover { color: var(--text-muted); }
+
+    .pplx-credit {
+      font-size: 11px;
+      color: var(--text-faint);
+    }
+
+    .pplx-credit a {
+      color: var(--text-faint);
+      text-decoration: none;
+    }
+
+    .pplx-credit a:hover { color: var(--text-muted); }
+
+    /* ── Error message ───────────────────────────────────── */
+    .form-error {
+      background: rgba(224,82,82,.1);
+      border: 1px solid rgba(224,82,82,.25);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      font-size: 12px;
+      color: #e05252;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .form-error.visible { display: block; }
+
+    /* ── Demo access bar ─────────────────────────────────── */
+    .demo-bar {
+      background: var(--accent-dim2);
+      border-bottom: 1px solid rgba(62,207,142,.1);
+      padding: 8px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+    }
+
+    .demo-bar-text {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .demo-bar-text strong {
+      color: var(--accent);
+    }
+
+    .demo-bar-btn {
+      padding: 4px 14px;
+      background: var(--accent);
+      color: #000;
+      font-size: 11px;
+      font-weight: 600;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: var(--font);
+      transition: background .15s;
+      white-space: nowrap;
+    }
+
+    .demo-bar-btn:hover { background: var(--accent-hover); }
+
+    /* offset page for demo bar */
+    .page { padding-top: 40px; }
+
+    /* ── Animations ──────────────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-card { animation: fadeUp .35s ease both; }
+
+    /* ── Responsive ──────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .brand-panel { display: none; }
+      .page {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto;
+      }
+      .auth-area { grid-column: 1; grid-row: 2; max-width: 480px; margin: 0 auto; width: 100%; }
+      .auth-footer { grid-column: 1; grid-row: 3; }
+      .auth-logo-mobile { display: flex; }
+    }
+
+    @media (max-width: 520px) {
+      .auth-area { padding: 16px; }
+      .auth-card { padding: 28px 24px; }
+      .form-row { grid-template-columns: 1fr; }
+      .oauth-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Demo mode banner -->
+  <div class="demo-bar" id="demoBar">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
+    </svg>
+    <span class="demo-bar-text">Demo mode — <strong>600 attendees</strong> from the Cypher community. No real credentials required.</span>
+    <button class="demo-bar-btn" onclick="demoLogin()">Enter as Demo User →</button>
+  </div>
+
+  <div class="page">
+
+    <!-- ── Left branding panel ── -->
+    <div class="brand-panel">
+      <div class="brand-wordmark">
+        <svg class="brand-logo-svg" viewBox="0 0 40 40" fill="none" aria-label="Cypher">
+          <rect width="40" height="40" rx="10" fill="#111"/>
+          <rect width="40" height="40" rx="10" fill="url(#gBrand)" opacity=".08"/>
+          <!-- Constellation nodes -->
+          <circle cx="20" cy="20" r="3.5" fill="#3ECF8E"/>
+          <circle cx="10" cy="12" r="2" fill="#fff" opacity=".5"/>
+          <circle cx="30" cy="10" r="2" fill="#fff" opacity=".5"/>
+          <circle cx="8"  cy="28" r="1.5" fill="#fff" opacity=".4"/>
+          <circle cx="32" cy="30" r="2" fill="#fff" opacity=".5"/>
+          <circle cx="22" cy="8"  r="1.5" fill="#fff" opacity=".35"/>
+          <!-- Edges -->
+          <line x1="20" y1="20" x2="10" y2="12" stroke="#3ECF8E" stroke-width="1" opacity=".5"/>
+          <line x1="20" y1="20" x2="30" y2="10" stroke="#3ECF8E" stroke-width="1" opacity=".5"/>
+          <line x1="20" y1="20" x2="8"  y2="28" stroke="#fff" stroke-width=".7" opacity=".25"/>
+          <line x1="20" y1="20" x2="32" y2="30" stroke="#3ECF8E" stroke-width="1" opacity=".4"/>
+          <line x1="10" y1="12" x2="22" y2="8"  stroke="#fff" stroke-width=".7" opacity=".2"/>
+          <defs><radialGradient id="gBrand" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#3ECF8E"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs>
+        </svg>
+        <span class="brand-name">CYPHER</span>
+      </div>
+
+      <div class="brand-tagline">DMV Defense Tech Intelligence</div>
+
+      <!-- Decorative constellation -->
+      <div class="brand-constellation">
+        <svg width="340" height="140" viewBox="0 0 340 140" fill="none">
+          <!-- edges -->
+          <line x1="60" y1="70" x2="120" y2="40" stroke="#3ECF8E" stroke-width="1" opacity=".3"/>
+          <line x1="120" y1="40" x2="200" y2="55" stroke="#3ECF8E" stroke-width="1" opacity=".3"/>
+          <line x1="200" y1="55" x2="280" y2="30" stroke="#3ECF8E" stroke-width="1" opacity=".25"/>
+          <line x1="200" y1="55" x2="260" y2="100" stroke="#fff" stroke-width=".7" opacity=".15"/>
+          <line x1="120" y1="40" x2="160" y2="110" stroke="#fff" stroke-width=".7" opacity=".12"/>
+          <line x1="60" y1="70" x2="40" y2="110" stroke="#fff" stroke-width=".7" opacity=".1"/>
+          <line x1="280" y1="30" x2="310" y2="80" stroke="#fff" stroke-width=".7" opacity=".12"/>
+          <line x1="160" y1="110" x2="260" y2="100" stroke="#fff" stroke-width=".7" opacity=".1"/>
+          <!-- nodes -->
+          <circle cx="60"  cy="70"  r="7" fill="#c94040" opacity=".9"/>
+          <circle cx="120" cy="40"  r="9" fill="#3ECF8E" opacity=".9"/>
+          <circle cx="200" cy="55"  r="11" fill="#4f98a3" opacity=".9"/>
+          <circle cx="280" cy="30"  r="6" fill="#d4a832" opacity=".9"/>
+          <circle cx="40"  cy="110" r="4" fill="#fff" opacity=".3"/>
+          <circle cx="160" cy="110" r="5" fill="#9966cc" opacity=".7"/>
+          <circle cx="260" cy="100" r="6" fill="#5a9e3e" opacity=".8"/>
+          <circle cx="310" cy="80"  r="4" fill="#fff" opacity=".25"/>
+          <!-- labels -->
+          <text x="74"  y="67"  fill="#c8c8c8" font-size="8" font-family="Inter" opacity=".6">DARPA</text>
+          <text x="130" y="37"  fill="#c8c8c8" font-size="8" font-family="Inter" opacity=".7">Anduril</text>
+          <text x="212" y="52"  fill="#c8c8c8" font-size="8" font-family="Inter" opacity=".7">In-Q-Tel</text>
+          <text x="288" y="27"  fill="#c8c8c8" font-size="8" font-family="Inter" opacity=".6">Shield AI</text>
+        </svg>
+      </div>
+
+      <h1 class="brand-headline">
+        Real-time intelligence<br/>for <span>frontier defense tech</span><br/>in the DMV
+      </h1>
+      <p class="brand-body">
+        Cypher maps 50+ organizations — government agencies, venture funds, defense startups, and key operators — into a live intelligence graph for the DC metro region.
+      </p>
+
+      <div class="brand-stats">
+        <div class="stat">
+          <span class="stat-value">50+</span>
+          <span class="stat-label">Entities</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">63</span>
+          <span class="stat-label">Connections</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">Live</span>
+          <span class="stat-label">Feed</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Auth Card ── -->
+    <div class="auth-area">
+      <div class="auth-card">
+        <!-- Mobile logo -->
+        <div class="auth-logo-mobile">
+          <svg width="28" height="28" viewBox="0 0 40 40" fill="none">
+            <rect width="40" height="40" rx="10" fill="#111"/>
+            <circle cx="20" cy="20" r="3.5" fill="#3ECF8E"/>
+            <circle cx="10" cy="12" r="2" fill="#fff" opacity=".5"/>
+            <circle cx="30" cy="10" r="2" fill="#fff" opacity=".5"/>
+            <line x1="20" y1="20" x2="10" y2="12" stroke="#3ECF8E" stroke-width="1" opacity=".5"/>
+            <line x1="20" y1="20" x2="30" y2="10" stroke="#3ECF8E" stroke-width="1" opacity=".5"/>
+          </svg>
+          <span style="font-size:16px;font-weight:700;color:#fff;">CYPHER</span>
+        </div>
+
+        <div class="auth-header">
+          <h2 class="auth-title" id="cardTitle">Welcome back</h2>
+          <p class="auth-subtitle" id="cardSubtitle">Sign in to your Cypher account</p>
+        </div>
+
+        <!-- Tab switcher -->
+        <div class="tab-row">
+          <button class="tab-btn active" id="tabSignIn" onclick="switchTab('signin')">Sign In</button>
+          <button class="tab-btn"        id="tabSignUp" onclick="switchTab('signup')">Create Account</button>
+        </div>
+
+        <!-- Error message -->
+        <div class="form-error" id="formError">Invalid credentials. Please try again.</div>
+
+        <!-- ── Sign In Panel ── -->
+        <div class="form-panel active" id="panelSignIn">
+          <form id="signInForm" onsubmit="handleSignIn(event)">
+            <div class="form-group">
+              <label class="form-label" for="siEmail">Email</label>
+              <input class="form-input" id="siEmail" type="email" name="email"
+                     placeholder="you@agency.gov" autocomplete="email" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="siPassword">Password</label>
+              <div class="input-wrap">
+                <input class="form-input" id="siPassword" type="password" name="password"
+                       placeholder="••••••••" autocomplete="current-password" required />
+                <button type="button" class="toggle-pw" onclick="togglePw('siPassword', this)" aria-label="Show password">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-meta">
+              <a href="#" onclick="return false;">Forgot password?</a>
+            </div>
+
+            <button class="btn-primary" type="submit" id="btnSignIn">Sign In →</button>
+          </form>
+
+          <div class="divider"><span>or continue with</span></div>
+
+          <div class="oauth-row">
+            <a class="btn-oauth" href="/api/auth/callback/google" onclick="handleOAuth(event, 'google')">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Google
+            </a>
+            <a class="btn-oauth" href="/api/auth/callback/github" onclick="handleOAuth(event, 'github')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <!-- ── Sign Up Panel ── -->
+        <div class="form-panel" id="panelSignUp">
+          <form id="signUpForm" onsubmit="handleSignUp(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="suFirst">First Name</label>
+                <input class="form-input" id="suFirst" type="text" name="firstName"
+                       placeholder="Jane" autocomplete="given-name" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="suLast">Last Name</label>
+                <input class="form-input" id="suLast" type="text" name="lastName"
+                       placeholder="Smith" autocomplete="family-name" required />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="suEmail">Work Email</label>
+              <input class="form-input" id="suEmail" type="email" name="email"
+                     placeholder="you@agency.gov" autocomplete="email" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="suPassword">Password</label>
+              <div class="input-wrap">
+                <input class="form-input" id="suPassword" type="password" name="password"
+                       placeholder="Min. 8 characters" autocomplete="new-password" minlength="8" required />
+                <button type="button" class="toggle-pw" onclick="togglePw('suPassword', this)" aria-label="Show password">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <button class="btn-primary" type="submit" id="btnSignUp">Create Account →</button>
+          </form>
+
+          <div class="divider"><span>or continue with</span></div>
+
+          <div class="oauth-row">
+            <a class="btn-oauth" href="/api/auth/callback/google" onclick="handleOAuth(event, 'google')">
+              <svg width="16" height="16" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+              Google
+            </a>
+            <a class="btn-oauth" href="/api/auth/callback/github" onclick="handleOAuth(event, 'github')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+
+        <!-- Better Auth badge -->
+        <div class="auth-powered">
+          <svg class="auth-powered-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <div class="auth-powered-text">
+            Auth powered by <strong>Better Auth</strong> — connect your backend at <code>/api/auth</code>. OAuth callbacks at <code>/api/auth/callback/:provider</code>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="auth-footer">
+      <div class="auth-footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Security</a>
+        <a href="#">Contact</a>
+      </div>
+      <div class="pplx-credit">
+        <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer">Created with Perplexity Computer</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    /* ── Tab switching ── */
+    function switchTab(tab) {
+      const isSignIn = tab === 'signin';
+      document.getElementById('tabSignIn').classList.toggle('active', isSignIn);
+      document.getElementById('tabSignUp').classList.toggle('active', !isSignIn);
+      document.getElementById('panelSignIn').classList.toggle('active', isSignIn);
+      document.getElementById('panelSignUp').classList.toggle('active', !isSignIn);
+      document.getElementById('cardTitle').textContent    = isSignIn ? 'Welcome back' : 'Create your account';
+      document.getElementById('cardSubtitle').textContent = isSignIn ? 'Sign in to your Cypher account' : 'Join the Cypher intelligence network';
+      document.getElementById('formError').classList.remove('visible');
+    }
+
+    /* ── Password toggle ── */
+    function togglePw(inputId, btn) {
+      var inp = document.getElementById(inputId);
+      var showing = inp.type === 'text';
+      inp.type = showing ? 'password' : 'text';
+      btn.innerHTML = showing
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+    }
+
+    /* ── Sign in handler → Better Auth endpoint ── */
+    function handleSignIn(e) {
+      e.preventDefault();
+      var btn = document.getElementById('btnSignIn');
+      btn.classList.add('loading');
+      btn.textContent = 'Signing in…';
+      var formData = {
+        email:    document.getElementById('siEmail').value,
+        password: document.getElementById('siPassword').value,
+      };
+      // Better Auth endpoint: POST /api/auth/sign-in/email
+      fetch('/api/auth/sign-in/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+        credentials: 'include',
+      })
+      .then(function(r) {
+        if (r.ok) return r.json().then(function(d) { window.location.href = 'index.html'; });
+        return r.json().then(function(d) { showError(d.message || 'Invalid credentials.'); });
+      })
+      .catch(function() {
+        // Demo fallback: if no backend, redirect anyway
+        window.location.href = 'index.html';
+      })
+      .finally(function() {
+        btn.classList.remove('loading');
+        btn.textContent = 'Sign In →';
+      });
+    }
+
+    /* ── Sign up handler → Better Auth endpoint ── */
+    function handleSignUp(e) {
+      e.preventDefault();
+      var btn = document.getElementById('btnSignUp');
+      btn.classList.add('loading');
+      btn.textContent = 'Creating account…';
+      var formData = {
+        email:    document.getElementById('suEmail').value,
+        password: document.getElementById('suPassword').value,
+        name:     document.getElementById('suFirst').value + ' ' + document.getElementById('suLast').value,
+      };
+      // Better Auth endpoint: POST /api/auth/sign-up/email
+      fetch('/api/auth/sign-up/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+        credentials: 'include',
+      })
+      .then(function(r) {
+        if (r.ok) return r.json().then(function(d) { window.location.href = 'index.html'; });
+        return r.json().then(function(d) { showError(d.message || 'Unable to create account.'); });
+      })
+      .catch(function() {
+        window.location.href = 'index.html';
+      })
+      .finally(function() {
+        btn.classList.remove('loading');
+        btn.textContent = 'Create Account →';
+      });
+    }
+
+    /* ── OAuth ── */
+    function handleOAuth(e, provider) {
+      e.preventDefault();
+      // Better Auth OAuth: GET /api/auth/callback/:provider
+      window.location.href = '/api/auth/callback/' + provider;
+    }
+
+    /* ── Demo login ── */
+    function demoLogin() {
+      document.getElementById('demoBar').style.opacity = '0.5';
+      setTimeout(function() { window.location.href = 'index.html'; }, 300);
+    }
+
+    /* ── Error display ── */
+    function showError(msg) {
+      var el = document.getElementById('formError');
+      el.textContent = msg;
+      el.classList.add('visible');
+    }
+  </script>
+</body>
+</html>
