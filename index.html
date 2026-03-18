@@ -396,6 +396,8 @@ svg{display:block}
   display:none;z-index:30;white-space:nowrap;
 }
   </style>
+  <!-- Auth0 SPA JS -->
+  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 </head>
 <body>
 <div id="app">
@@ -658,7 +660,7 @@ svg{display:block}
     <!-- Better Auth notice -->
     <div style="margin-top:18px;background:rgba(62,207,142,.06);border:1px solid rgba(62,207,142,.15);border-radius:5px;padding:9px 12px;display:flex;align-items:flex-start;gap:8px;">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3ECF8E" stroke-width="2" style="flex-shrink:0;margin-top:1px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <span style="font-size:10px;color:#777;line-height:1.5;">Auth powered by <strong style="color:#3ECF8E;">Better Auth</strong> — connect your backend at <code style="font-family:monospace;background:rgba(255,255,255,.06);padding:1px 4px;border-radius:2px;font-size:9px;">/api/auth</code></span>
+      <span style="font-size:10px;color:#777;line-height:1.5;">Auth powered by <strong style="color:#3ECF8E;">Auth0</strong> — secure identity via <code style="font-family:monospace;background:rgba(255,255,255,.06);padding:1px 4px;border-radius:2px;font-size:9px;">YOUR_DOMAIN.us.auth0.com</code></span>
     </div>
   </div>
 </div>
@@ -1361,10 +1363,54 @@ function calNav(dir){
   buildCalendar();
 }
 
-/* ── Auth chip interaction — show inline modal ── */
-document.getElementById('authChip').addEventListener('click',function(e){
+/* ── Auth0 Setup ── */
+let auth0Client = null;
+
+async function initAuth0(){
+  auth0Client = await auth0.createAuth0Client({
+    domain: 'dev-w6yeaqczlype2grp.us.auth0.com',
+    clientId: 'sXBvKYDUHkc9aATCmaiLWaq8irELeBiV',
+    authorizationParams: {
+      redirect_uri: window.location.origin,
+    },
+  });
+
+  // Handle redirect callback if returning from Auth0
+  if(window.location.search.includes('code=') || window.location.search.includes('error=')){
+    await auth0Client.handleRedirectCallback();
+    window.history.replaceState({}, document.title, window.location.pathname);
+  }
+
+  const isAuthenticated = await auth0Client.isAuthenticated();
+  if(isAuthenticated){
+    const user = await auth0Client.getUser();
+    updateAuthState(user.name || user.email || 'User');
+  } else {
+    // Show auth modal on page open
+    showAuthModal('signin');
+  }
+}
+
+async function auth0LoginPopup(hint){
+  if(!auth0Client) return;
+  const params = { authorizationParams: { redirect_uri: window.location.origin } };
+  if(hint === 'signup') params.authorizationParams.screen_hint = 'signup';
+  try {
+    await auth0Client.loginWithPopup(params);
+    const user = await auth0Client.getUser();
+    updateAuthState(user.name || user.email || 'User');
+    closeAuthModal();
+  } catch(err){
+    if(err.message && !err.message.includes('closed')){
+      showModalError('Authentication failed — please try again.');
+    }
+  }
+}
+
+/* ── Auth chip interaction ── */
+document.getElementById('authChip').addEventListener('click', function(e){
   e.stopPropagation();
-  showAuthModal('signin');
+  auth0LoginPopup('signin');
 });
 
 function showAuthModal(tab){
@@ -1388,35 +1434,12 @@ function switchAuthTab(tab){
 
 function handleModalSignIn(e){
   e.preventDefault();
-  const btn=document.getElementById('amBtnSignIn');
-  btn.textContent='Signing in…';btn.disabled=true;
-  fetch('/api/auth/sign-in/email',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({email:document.getElementById('amEmail').value,password:document.getElementById('amPassword').value}),
-    credentials:'include',
-  }).then(r=>{
-    if(r.ok){closeAuthModal();updateAuthState('Demo User');}  
-    else showModalError('Invalid credentials — try again.');
-  }).catch(()=>{closeAuthModal();updateAuthState('Demo User');})  
-  .finally(()=>{btn.textContent='Sign In →';btn.disabled=false;});
+  auth0LoginPopup('signin');
 }
 
 function handleModalSignUp(e){
   e.preventDefault();
-  const btn=document.getElementById('amBtnSignUp');
-  btn.textContent='Creating…';btn.disabled=true;
-  fetch('/api/auth/sign-up/email',{
-    method:'POST',headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      email:document.getElementById('amEmailUp').value,
-      password:document.getElementById('amPasswordUp').value,
-      name:document.getElementById('amFirstName').value+' '+document.getElementById('amLastName').value,
-    }),credentials:'include',
-  }).then(r=>{
-    if(r.ok){closeAuthModal();updateAuthState(document.getElementById('amFirstName').value);}
-    else showModalError('Could not create account.');
-  }).catch(()=>{closeAuthModal();updateAuthState(document.getElementById('amFirstName').value||'User');})
-  .finally(()=>{btn.textContent='Create Account →';btn.disabled=false;});
+  auth0LoginPopup('signup');
 }
 
 function showModalError(msg){
@@ -1441,6 +1464,7 @@ function init(){
   // Simulation starts immediately — auto-stops when kinetic energy settles
   simFrame=0;
   simRunning=true;
+  initAuth0();
 }
 
 // Wait for fonts
