@@ -560,8 +560,6 @@
       .oauth-row { grid-template-columns: 1fr; }
     }
   </style>
-  <!-- Auth0 SPA JS -->
-  <script src="https://cdn.auth0.com/js/auth0-spa-js/2.1/auth0-spa-js.production.js"></script>
 </head>
 <body>
 
@@ -824,61 +822,57 @@
         : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
     }
 
-    /* ── Auth0 Setup ── */
-    var auth0Client = null;
-
-    (async function initAuth0() {
-      auth0Client = await auth0.createAuth0Client({
-        domain: 'dev-w6yeaqczlype2grp.us.auth0.com',
-        clientId: 'sXBvKYDUHkc9aATCmaiLWaq8irELeBiV',
-        authorizationParams: {
-          redirect_uri: window.location.origin,
-        },
-      });
-
-      if (window.location.search.includes('code=') || window.location.search.includes('error=')) {
-        await auth0Client.handleRedirectCallback();
-        window.history.replaceState({}, document.title, window.location.pathname);
-      }
-
-      var isAuthenticated = await auth0Client.isAuthenticated();
-      if (isAuthenticated) {
-        window.location.href = 'index.html';
-      }
-    })();
-
-    async function auth0LoginPopup(hint) {
-      if (!auth0Client) return;
-      var params = { authorizationParams: { redirect_uri: window.location.origin } };
-      if (hint === 'signup') params.authorizationParams.screen_hint = 'signup';
-      try {
-        await auth0Client.loginWithPopup(params);
-        window.location.href = 'index.html';
-      } catch (err) {
-        if (err.message && !err.message.includes('closed')) {
-          showError('Authentication failed — please try again.');
-        }
-      }
-    }
-
-    /* ── Sign in handler → Auth0 popup ── */
+    /* ── Sign in handler → Better Auth endpoint ── */
     function handleSignIn(e) {
       e.preventDefault();
-      auth0LoginPopup('signin');
+      var btn = document.getElementById('btnSignIn');
+      btn.classList.add('loading');
+      btn.textContent = 'Signing in…';
+      fetch('/api/auth/sign-in/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email:    document.getElementById('siEmail').value,
+          password: document.getElementById('siPassword').value,
+        }),
+        credentials: 'include',
+      })
+      .then(function(r) {
+        if (r.ok) { window.location.href = 'index.html'; return; }
+        return r.json().then(function(d) { showError(d.message || 'Invalid credentials.'); });
+      })
+      .catch(function() { showError('Could not connect — check your network.'); })
+      .finally(function() { btn.classList.remove('loading'); btn.textContent = 'Sign In →'; });
     }
 
-    /* ── Sign up handler → Auth0 popup with screen_hint: signup ── */
+    /* ── Sign up handler → Better Auth endpoint ── */
     function handleSignUp(e) {
       e.preventDefault();
-      auth0LoginPopup('signup');
+      var btn = document.getElementById('btnSignUp');
+      btn.classList.add('loading');
+      btn.textContent = 'Creating account…';
+      fetch('/api/auth/sign-up/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email:    document.getElementById('suEmail').value,
+          password: document.getElementById('suPassword').value,
+          name:     document.getElementById('suFirst').value + ' ' + document.getElementById('suLast').value,
+        }),
+        credentials: 'include',
+      })
+      .then(function(r) {
+        if (r.ok) { window.location.href = 'index.html'; return; }
+        return r.json().then(function(d) { showError(d.message || 'Unable to create account.'); });
+      })
+      .catch(function() { showError('Could not connect — check your network.'); })
+      .finally(function() { btn.classList.remove('loading'); btn.textContent = 'Create Account →'; });
     }
 
-    /* ── OAuth via Auth0 connection ── */
+    /* ── OAuth → Better Auth social provider ── */
     function handleOAuth(e, provider) {
       e.preventDefault();
-      var connection = provider === 'google' ? 'google-oauth2' : provider;
-      var hint = document.getElementById('panelSignUp').classList.contains('active') ? 'signup' : 'signin';
-      auth0LoginPopup(hint, connection);
+      window.location.href = '/api/auth/signin/' + provider;
     }
 
     /* ── Demo login ── */

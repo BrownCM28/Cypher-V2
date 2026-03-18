@@ -1,0 +1,29 @@
+{
+  "name": "cypher-v2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrownCM28/Cypher-V2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/BrownCM28/Cypher-V2/issues"
+  },
+  "homepage": "https://github.com/BrownCM28/Cypher-V2#readme",
+  "dependencies": {
+    "better-auth": "^1.5.5",
+    "pg": "^8.20.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "typescript": "^5.9.3"
+  }
+}
