@@ -873,10 +873,12 @@
       auth0LoginPopup('signup');
     }
 
-    /* ── OAuth (now handled by Auth0) ── */
+    /* ── OAuth via Auth0 connection ── */
     function handleOAuth(e, provider) {
       e.preventDefault();
-      auth0LoginPopup('signin');
+      var connection = provider === 'google' ? 'google-oauth2' : provider;
+      var hint = document.getElementById('panelSignUp').classList.contains('active') ? 'signup' : 'signin';
+      auth0LoginPopup(hint, connection);
     }
 
     /* ── Demo login ── */
